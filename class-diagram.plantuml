@@ -1,0 +1,92 @@
+@startuml
+class User
+
+class Profile {
+    id
+    user_id
+    avg_rating
+}
+
+class Item {
+    id
+    condition_id
+    name
+    description
+    image_url
+    country
+    zip
+    sold_at
+}
+note bottom of Item
+sold_at is a datetime, default NULL.
+Unsold items are NULL.
+end note
+
+class Category {
+    id
+    name
+}
+
+class Condition {
+    id
+    name
+}
+
+class Offer {
+    id
+    item_id
+    user_id
+    amount
+    date
+}
+
+class Sale {
+    id
+    item_id
+    buyer_id
+    seller_id
+    country_id
+
+    full_name
+    street_name
+    house_number
+    city
+    zip
+}
+
+class Contact {
+    id
+    user_id
+    country_id
+    full_name
+    street_name
+    house_number
+    city
+    zip
+}
+
+
+class Rating {
+    id
+    rater_id
+    rated_id
+    rating
+}
+
+class Country {
+    id
+    name
+}
+
+User --- Profile
+User --- Offer
+User --- Sale
+User --- Contact
+User --- Item
+User --- Rating
+Item --- Condition
+Item --- Category
+
+Country -up- Sale
+Country -up- Contact
+@enduml

@@ -1,0 +1,43 @@
+@startuml
+start
+split
+:Heim;
+kill
+split again
+:Vörur;
+:Skoða vöru;
+:Bjóða í vöru;
+kill
+split again
+:Leit;
+kill
+split again
+:Selja;
+kill
+split again
+if (Innskráður) then (True)
+    split
+    :Pósthólf;
+    :Skoða póst;
+    kill
+    split again
+    :Skoða aðgang;
+    :Breyta upplýsingum;
+    kill
+    split again
+    :Þín kaup;
+    :Skoða kaup;
+    kill
+    split again
+    :Skrá út;
+    end
+    end split
+else (False)
+    split
+    :Innskráning;
+    kill
+    split again
+    :Nýskráning;
+    kill
+    end split
+@enduml
