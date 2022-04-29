@@ -27,7 +27,7 @@ if (Innskráður) then (True)
     :Breyta upplýsingum;
     kill
     split again
-    :Þín kaup;
+    :Þín viðskipti;
     :Skoða kaup;
     kill
     split again
