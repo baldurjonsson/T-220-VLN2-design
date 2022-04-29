@@ -4,57 +4,6 @@ hide empty fields
 hide empty members
 'left to right direction
 
-package Django {
-    class User {
-        + username: string
-        + first_name: string
-        + last_name: string
-        + email: string
-        + password: string
-        + is_staff: bool
-        + is_active: bool
-        + is_superuser: bool
-        + last_login: datetime
-        + date_joined: datetime
-    }
-}
-
-package user {
-    class UserProfile {
-        + id: integer
-        + user: User
-        + avg_rating: integer
-        + bio: string
-        + image_url: string
-        + calculate_avg_rating()
-    }
-
-    class Country {
-        + id: integer
-        + name: string
-    }
-
-    class Contact {
-        + id: integer
-        + user: User
-        + country: Country
-        + full_name: string
-        + street_name: string
-        + house_number: string
-        + city: string
-        + zip: string
-    }
-    class Rating {
-        + id: integer
-        + rater: User
-        + rated: User
-        + rating: integer
-    }
-    note bottom of Rating
-        Rating is an integer between 1 - 10
-        represented in GUI as "half stars"
-    end note
-}
 package item {
     class Condition {
         + id: integer
@@ -130,33 +79,30 @@ package item {
         Same with amount, for peace of mind.
     end note
 }
-package messaging {
-    class Message {
-        id: integer
-        sender: User
-        receiver: User
-        subject: string
-        body: string
-        sent_at: datetime
-        read_at: datetime | null
-    }
-    class MessageMeta {
-        id: integer
-        message: Message
-        model_name: string
-        model_fk: integer
-    }
+together {
+package Django {
+    class User
 }
-Rating --|> User
-UserProfile --|> User
-Contact --|> Country
-Contact --|> User
 
+package user {
+    class UserProfile
+
+    class Country
+
+    class Contact
+    class Rating
+}
+package messaging {
+    class Message
+    class MessageMeta
+}
+}
 Offer <|--|> Item
 Offer --|> User
 
 Item --|> Condition
 Item --|> Country
+
 
 Sale --|> Item
 Sale --|> User
@@ -167,9 +113,14 @@ Sale --- Contact
 CategoryItem --|> Category
 CategoryItem --|> Item
 
-Message --|> User
-MessageMeta --|> Message
 MessageMeta --- Item
 MessageMeta --- Offer
+
+Country -[hidden]- Contact
+Contact -[hidden]- UserProfile
+UserProfile -[hidden]- Rating
+
+messaging -down[hidden]- Django
+Django -down[hidden]- user
 
 @enduml

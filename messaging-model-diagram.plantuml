@@ -1,0 +1,51 @@
+@startuml
+
+hide empty fields
+hide empty members
+'left to right direction
+
+package messaging {
+    class Message {
+        id: integer
+        sender: User
+        receiver: User
+        subject: string
+        body: string
+        sent_at: datetime
+        read_at: datetime | null
+    }
+    class MessageMeta {
+        id: integer
+        message: Message
+        model_name: string
+        model_fk: integer
+    }
+}
+together {
+
+    package Django {
+        class User
+    }
+
+    package user {
+        class UserProfile
+        class Country
+        class Contact
+        class Rating
+    }
+    package item {
+        class Condition
+        class Category
+        class Item
+        class CategoryItem
+        class Offer
+        class Sale
+    }
+}
+
+Message --|> User
+MessageMeta --|> Message
+MessageMeta --- Item
+MessageMeta --- Offer
+
+@enduml

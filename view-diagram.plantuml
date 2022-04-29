@@ -11,6 +11,7 @@ class ItemViews {
 }
 note right of ItemViews::get_all_sales
 All sales for the logged in user
+Both where he is buyer and seller.
 end note
 class UserViews {
     frontpage()

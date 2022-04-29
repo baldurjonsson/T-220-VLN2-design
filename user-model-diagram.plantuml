@@ -1,0 +1,67 @@
+@startuml
+
+hide empty fields
+hide empty members
+package user {
+    class UserProfile {
+        + id: integer
+        + user: User
+        + avg_rating: integer
+        + bio: string
+        + image_url: string
+        + calculate_avg_rating()
+    }
+
+    class Country {
+        + id: integer
+        + name: string
+    }
+
+    class Contact {
+        + id: integer
+        + user: User
+        + country: Country
+        + full_name: string
+        + street_name: string
+        + house_number: string
+        + city: string
+        + zip: string
+    }
+    class Rating {
+        + id: integer
+        + rater: User
+        + rated: User
+        + rating: integer
+    }
+    note bottom of Rating
+        Rating is an integer between 1 - 10
+        represented in GUI as "half stars"
+    end note
+}
+together {
+package Django {
+    class User
+}
+package item {
+    class Condition
+    class Category
+    class Item
+    class CategoryItem
+    class Offer
+    class Sale
+}
+package messaging {
+    class Message
+    class MessageMeta
+}
+}
+Rating --|> User
+UserProfile --|> User
+Contact --|> Country
+Contact --|> User
+
+Item --|> Country
+
+user -right[hidden]- item
+messaging -up[hidden]- item
+@enduml
