@@ -1,88 +1,172 @@
 @startuml
-class User
 
-class Profile {
-    id
-    user_id
-    avg_rating
+hide empty fields
+hide empty members
+'left to right direction
+
+package Django {
+    class User {
+        + username: string
+        + first_name: string
+        + last_name: string
+        + email: string
+        + password: string
+        + is_staff: bool
+        + is_active: bool
+        + is_superuser: bool
+        + last_login: datetime
+        + date_joined: datetime
+    }
 }
 
-class Item {
-    id
-    condition_id
-    name
-    description
-    image_url
-    country
-    zip
-    + sold_at: datetime
+package user {
+    class UserProfile {
+        + id: integer
+        + user: User
+        + avg_rating: integer
+        + bio: string
+        + image_url: string
+        + calculate_avg_rating()
+    }
+
+    class Country {
+        + id: integer
+        + name: string
+    }
+
+    class Contact {
+        + id: integer
+        + user: User
+        + country: Country
+        + full_name: string
+        + street_name: string
+        + house_number: string
+        + city: string
+        + zip: string
+    }
+    class Rating {
+        + id: integer
+        + rater: User
+        + rated: User
+        + rating: integer
+    }
+    note bottom of Rating
+        Rating is an integer between 1 - 10
+        represented in GUI as "half stars"
+    end note
 }
+package item {
+    class Condition {
+        + id: integer
+        + name: string
+    }
 
-class Category {
-    id
-    name
+    class Category {
+        + id: integer
+        + name: string
+    }
+
+    class Item {
+        + id: integer
+        + condition: Condition
+        + country: Country
+        + accepted_offer: Offer | null
+        + name: string
+        + description: string
+        + image_url: string
+        + zip: string
+        + sold_at: datetime
+        + published_at: datetime
+        + created_at: datetime
+        + updated_at: datetime
+    }
+    note bottom of Item
+        sold_at is NULL until sold.
+        Item is for sale when
+        published_at has passed
+        and sold_at is NULL.
+    end note
+
+    class CategoryItem {
+        + id: integer
+        + category: Category
+        + item: Item
+    }
+
+    class Offer {
+        + id: integer
+        + item: Item
+        + user: User
+        + amount: integer
+        + date: datetime
+        + accepted: bool
+    }
+    note bottom of Offer
+        amount is in ISK currency, no aurar!
+    end note
+
+
+    class Sale {
+        + id: integer
+        + item: Item
+        + buyer: User
+        + seller: User
+        + offer: Offer
+        + country: Country
+        + amount: amount
+        + full_name: string
+        + street_name: string
+        + house_number: string
+        + city: string
+        + zip: string
+        + fill_from_contact(contact: Contact)
+    }
+    note bottom of Sale
+        Contact information is "rendered"
+        on the sale so the state of the
+        contact information doesn't
+        change in the future.
+        Same with amount, for peace of mind.
+    end note
 }
-
-class Condition {
-    id
-    name
+package messaging {
+    class Message {
+        id: integer
+        sender: User
+        receiver: User
+        subject: string
+        body: string
+        sent_at: datetime
+        read_at: datetime | null
+    }
+    class MessageMeta {
+        id: integer
+        message: Message
+        model_name: string
+        model_fk: integer
+    }
 }
+Rating --|> User
+UserProfile --|> User
+Contact --|> Country
+Contact --|> User
 
-class Offer {
-    id
-    item_id
-    user_id
-    amount
-    date
-}
+Offer <|--|> Item
+Offer --|> User
 
-class Sale {
-    id
-    item_id
-    buyer_id
-    seller_id
-    country_id
+Item --|> Condition
+Item --|> Country
 
-    full_name
-    street_name
-    house_number
-    city
-    zip
-}
+Sale --|> Item
+Sale --|> User
+Sale --|> Offer
+Sale --|> Country
+Sale --- Contact
 
-class Contact {
-    id
-    user_id
-    country_id
-    full_name
-    street_name
-    house_number
-    city
-    zip
-}
+CategoryItem --|> Category
+CategoryItem --|> Item
 
+Message --|> User
+MessageMeta --|> Message
 
-class Rating {
-    id
-    rater_id
-    rated_id
-    rating
-}
-
-class Country {
-    id
-    name
-}
-
-User --- Profile
-User --- Offer
-User --- Sale
-User --- Contact
-User --- Item
-User --- Rating
-Item --- Condition
-Item --- Category
-
-Country -up- Sale
-Country -up- Contact
 @enduml
