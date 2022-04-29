@@ -5,8 +5,10 @@ split
 kill
 split again
 :Vörur;
-:Skoða vöru;
 :Bjóða í vöru;
+kill
+split again
+:Skoða vöruflokk;
 kill
 split again
 :Leit;

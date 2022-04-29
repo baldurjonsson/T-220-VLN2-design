@@ -71,6 +71,7 @@ package item {
         + condition: Condition
         + country: Country
         + accepted_offer: Offer | null
+        + views: integer
         + name: string
         + description: string
         + image_url: string
